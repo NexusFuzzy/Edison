@@ -1,0 +1,7 @@
+C:\Users\Vladimir\source\repos\Eddy\Eddy\bin\Debug\Eddy.exe.config
+C:\Users\Vladimir\source\repos\Eddy\Eddy\bin\Debug\Eddy.exe
+C:\Users\Vladimir\source\repos\Eddy\Eddy\bin\Debug\Eddy.pdb
+C:\Users\Vladimir\source\repos\Eddy\Eddy\obj\Debug\Eddy.csprojAssemblyReference.cache
+C:\Users\Vladimir\source\repos\Eddy\Eddy\obj\Debug\Eddy.csproj.CoreCompileInputs.cache
+C:\Users\Vladimir\source\repos\Eddy\Eddy\obj\Debug\Eddy.exe
+C:\Users\Vladimir\source\repos\Eddy\Eddy\obj\Debug\Eddy.pdb
