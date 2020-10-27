@@ -5,7 +5,7 @@
 
 Tool to decrypt encrypted strings in AgentTesla version 2 and 3
 
-Usage: eddy.exe TeslaSample.exe Output.txt <Version (Can be 2, 3 or 0 for Auto-Detect)
+Usage: eddy.exe TeslaSample.exe Output.txt <Version (Can be 2, 3 or 0 for Auto-Detect)>
 
 ![alt text](https://github.com/hariomenkel/Edison/raw/master/screenshot.PNG)
 
