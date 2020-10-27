@@ -12,15 +12,37 @@ namespace Eddy
     {
         static void Main(string[] args)
         {
-            if (args.Length < 2)
+            if (args.Length < 3)
             {
                 PrintHelp();
             }
             else
             {
-                ProcessFile(args[0], args[1]);
+                try
+                {
+                    switch (Convert.ToInt32(args[2]))
+                    {
+                        case 0:
+                            if (!v2(args[0], args[1]))
+                            {
+                                v3(args[0], args[1]);
+                            }
+                            break;
+                        case 2:
+                            v2(args[0], args[1]);
+                            break;
+                        case 3:
+                            v3(args[0], args[1]);
+                            break;
+                    }
+                }
+                catch
+                {
+                    PrintHelp();
+                }
+
             }
-                      
+
         }
 
         static void PrintHelp()
@@ -28,11 +50,11 @@ namespace Eddy
             Console.WriteLine("> Edison");
             Console.WriteLine(">> Automatically extract encrypted strings from AgentTesla samples");
             Console.WriteLine(">> @hariomenkel / https://github.com/hariomenkel/Edison");
-            Console.WriteLine("Usage: " + System.AppDomain.CurrentDomain.FriendlyName + " <Input File> <Output File>");
-            Console.WriteLine("Example: " + AppDomain.CurrentDomain.FriendlyName + " AgentTesla.exe DecryptedStrings.txt");
+            Console.WriteLine("Usage: " + System.AppDomain.CurrentDomain.FriendlyName + " <Input File> <Output File> <Version(Can be '2' or '3' or '0' to try all)>");
+            Console.WriteLine("Example: " + AppDomain.CurrentDomain.FriendlyName + " AgentTesla.exe DecryptedStrings.txt 0");
         }
 
-        static void ProcessFile(string input, string output)
+        static bool v2(string input, string output)
         {
             byte[] array_Key = new byte[32];
             byte[] array_IV = new byte[16];
@@ -47,9 +69,9 @@ namespace Eddy
             catch (Exception ex)
             {
                 Console.WriteLine("Error while loading the file: " + ex.Message);
-                return;
+                return false;
             }
-            
+
             Module[] modules = a.GetModules();
             var fields = modules[0].GetFields();
             foreach (var field in fields)
@@ -80,8 +102,50 @@ namespace Eddy
                     catch (Exception ex)
                     {
                         Console.WriteLine("!! Error !! " + ex.Message);
-                    }                    
+                        return false;
+                    }
                 }
+            }
+            return true;
+        }
+
+        static bool v3(string input, string output)
+        {
+            Assembly a = null;
+            try
+            {
+                a = Assembly.LoadFile(input);
+
+                Module[] modules = a.GetModules();
+                var types = modules[0].GetTypes();
+
+                foreach (Type t in types)
+                {
+                    var methods = t.GetMethods();
+
+                    if (methods.Count() > 700)
+                    {
+                        foreach (var m in methods)
+                        {
+                            if (m.ReturnType.ToString() == "System.String")
+                            {
+                                string s = "";
+                                var result = m.Invoke(s, null);
+                                using (System.IO.StreamWriter file = new System.IO.StreamWriter(output, true))
+                                {
+                                    Console.WriteLine(":: Success :: " + result);
+                                    file.WriteLine(result);
+                                }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while loading the file: " + ex.Message);
+                return false;
             }
         }
 
