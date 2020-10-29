@@ -12,3 +12,12 @@ C:\Users\vladimir\Source\Repos\Edison2\Eddy\obj\Debug\Eddy.csprojAssemblyReferen
 C:\Users\vladimir\Source\Repos\Edison2\Eddy\obj\Debug\Eddy.csproj.CoreCompileInputs.cache
 C:\Users\vladimir\Source\Repos\Edison2\Eddy\obj\Debug\Eddy.exe
 C:\Users\vladimir\Source\Repos\Edison2\Eddy\obj\Debug\Eddy.pdb
+C:\Users\Morty\Documents\Projects\Edison\Eddy\obj\Debug\Eddy.csprojAssemblyReference.cache
+C:\Users\Morty\Documents\Projects\Edison\Eddy\obj\Debug\Eddy.exe
+C:\Users\Morty\Documents\Projects\Edison\Eddy\obj\Debug\Eddy.pdb
+C:\Users\Morty\Documents\Projects\Edison\Eddy\bin\Debug\Eddy.exe.config
+C:\Users\Morty\Documents\Projects\Edison\Eddy\bin\Debug\Eddy.exe
+C:\Users\Morty\Documents\Projects\Edison\Eddy\bin\Debug\Eddy.pdb
+C:\Users\Morty\Documents\Projects\Edison\Eddy\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\Morty\Documents\Projects\Edison\Eddy\obj\Debug\Eddy.csproj.Fody.CopyLocal.cache
+C:\Users\Morty\Documents\Projects\Edison\Eddy\obj\Debug\Eddy.csproj.CopyComplete
