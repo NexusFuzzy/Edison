@@ -61,19 +61,21 @@ namespace Eddy
             int keyLength = 32;
             int ivLength = 16;
 
-            Assembly a = null;
-            try
+            Assembly a = LoadAssembly(input);
+
+            if (a == null)
             {
-                a = Assembly.LoadFile(input);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error while loading the file: " + ex.Message);
                 return false;
             }
 
             Module[] modules = a.GetModules();
             var fields = modules[0].GetFields();
+
+            if (fields.Length == 0)
+            {
+                return false;
+            }
+
             foreach (var field in fields)
             {
                 var objArr = field.GetValue(null);
@@ -92,7 +94,6 @@ namespace Eddy
                         Buffer.BlockCopy(arrPayload, 0, array_Key, 0, keyLength);
                         Buffer.BlockCopy(arrPayload, keyLength, array_IV, 0, ivLength);
                         Buffer.BlockCopy(arrPayload, keyLength + ivLength, array_EncryptedValue, 0, offsetKeyAndIV);
-
                         using (System.IO.StreamWriter file = new System.IO.StreamWriter(output, true))
                         {
                             Console.WriteLine(":: Success :: " + Encoding.UTF8.GetString(Decrypt(array_EncryptedValue, array_Key, array_IV)));
@@ -111,42 +112,55 @@ namespace Eddy
 
         static bool v3(string input, string output)
         {
-            Assembly a = null;
-            try
+            Assembly a = LoadAssembly(input);
+
+            Module[] modules = a.GetModules();
+            var types = modules[0].GetTypes();
+
+            foreach (Type t in types)
             {
-                a = Assembly.LoadFile(input);
+                var methods = t.GetMethods();
 
-                Module[] modules = a.GetModules();
-                var types = modules[0].GetTypes();
-
-                foreach (Type t in types)
+                if (methods.Count() > 700)
                 {
-                    var methods = t.GetMethods();
-
-                    if (methods.Count() > 700)
+                    foreach (var m in methods)
                     {
-                        foreach (var m in methods)
+                        if (m.ReturnType.ToString() == "System.String")
                         {
-                            if (m.ReturnType.ToString() == "System.String")
+                            string s = "";
+                            var result = m.Invoke(s, null);
+                            using (System.IO.StreamWriter file = new System.IO.StreamWriter(output, true))
                             {
-                                string s = "";
-                                var result = m.Invoke(s, null);
-                                using (System.IO.StreamWriter file = new System.IO.StreamWriter(output, true))
-                                {
-                                    Console.WriteLine(":: Success :: " + result);
-                                    file.WriteLine(result);
-                                }
+                                Console.WriteLine(":: Success :: " + result);
+                                file.WriteLine(result);
                             }
                         }
                     }
                 }
-                return true;
             }
-            catch (Exception ex)
+            return true;
+        }
+
+        static Assembly LoadAssembly(string input)
+        {
+            Assembly a = null;
+            try
             {
-                Console.WriteLine("Error while loading the file: " + ex.Message);
-                return false;
+                a = Assembly.Load(System.IO.File.ReadAllBytes(input));
             }
+            catch (BadImageFormatException)
+            {
+                var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(input);
+
+                using (var memoryStream = new System.IO.MemoryStream())
+                {
+                    assembly.Write(memoryStream);
+                    byte[] asssemblyBytes = memoryStream.ToArray();
+                    a = Assembly.Load(asssemblyBytes);
+                }
+            }
+
+            return a;
         }
 
         static byte[] Decrypt(byte[] A_0, byte[] A_1, byte[] A_2)
