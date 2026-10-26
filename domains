@@ -1,2 +1,2 @@
 ||fb.watch^
-/^video\..*\.fbcdn\.net$/
+||video.*.fbcdn.net^
